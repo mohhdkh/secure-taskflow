@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 import jwt
 from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError
+from argon2.exceptions import InvalidHashError, VerifyMismatchError
 
 
 JWT_SECRET = os.getenv("JWT_SECRET", "development-only-change-me")
@@ -18,7 +18,7 @@ def hash_password(password: str) -> str:
 def verify_password(password: str, encoded: str) -> bool:
     try:
         return hasher.verify(encoded, password)
-    except VerifyMismatchError:
+    except (InvalidHashError, VerifyMismatchError):
         return False
 
 
