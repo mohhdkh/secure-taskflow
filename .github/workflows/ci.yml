@@ -28,6 +28,7 @@ jobs:
     env:
       TEST_DATABASE_URL: postgresql+psycopg://taskflow:taskflow@localhost:5432/taskflow_test
       JWT_SECRET: ci-only-secret
+      PYTHONPATH: .
     defaults:
       run:
         working-directory: backend
