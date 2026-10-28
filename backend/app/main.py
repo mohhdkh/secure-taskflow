@@ -15,7 +15,11 @@ from .models import Task, User
 from .security import create_token, decode_token, hash_password, verify_password
 
 
-class LoginInput(BaseModel):
+class ApiInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+
+class LoginInput(ApiInput):
     username: str = Field(min_length=3, max_length=80)
     password: str = Field(min_length=8, max_length=128)
 
@@ -25,14 +29,14 @@ class TokenOutput(BaseModel):
     token_type: str = "bearer"
 
 
-class TaskInput(BaseModel):
+class TaskInput(ApiInput):
     title: str = Field(min_length=2, max_length=160)
     description: str = Field(default="", max_length=1000)
     status: Literal["todo", "doing", "done"] = "todo"
     priority: Literal["low", "medium", "high"] = "medium"
 
 
-class TaskPatch(BaseModel):
+class TaskPatch(ApiInput):
     title: str | None = Field(default=None, min_length=2, max_length=160)
     description: str | None = Field(default=None, max_length=1000)
     status: Literal["todo", "doing", "done"] | None = None

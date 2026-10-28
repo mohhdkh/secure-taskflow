@@ -24,7 +24,7 @@ The API never trusts the UI to enforce ownership. Every read and mutation resolv
 
 ## Quality strategy
 
-- Backend integration tests cover health, authentication failure, authorization and the full task CRUD workflow.
+- Backend integration tests cover health, authentication failure, expired and malformed tokens, corrupted stored credentials, invalid payloads, authorization boundaries, missing resources and the full task CRUD workflow.
 - CI runs those tests against a real PostgreSQL 16 service, not only SQLite.
 - The frontend component test mocks the HTTP boundary and verifies the Arabic login-to-dashboard flow.
 - The production frontend build is part of the required GitHub Actions quality gate.
