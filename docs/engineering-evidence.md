@@ -6,7 +6,7 @@ This file records reproducible results rather than estimated performance claims.
 
 | Check | Result | Environment |
 |---|---:|---|
-| Backend/API suite | 10 passed in 3.89 seconds | Python 3.12, isolated local test database |
+| Backend/API suite | 28 passed in 6.41 seconds | Python 3.12, isolated local test database |
 | Frontend component suite | 1 passed in 4.60 seconds | Vitest + jsdom |
 | Production frontend build | Passed in 1.24 seconds; 147.63 kB JavaScript, 48.01 kB gzip | Vite production build |
 
@@ -26,12 +26,18 @@ The repository badge links directly to the latest workflow result. Individual pu
 ## Tested usage scenarios
 
 - successful and failed login;
+- rejected short, whitespace-only and unexpected login fields;
 - anonymous access rejection;
-- invalid-token rejection;
+- malformed, expired and invalid-subject token rejection;
+- non-Bearer authentication rejection;
 - deleted-account token rejection;
+- corrupted password-hash fail-closed behavior;
 - owner-scoped task listing;
 - cross-user update denial;
 - cross-user deletion denial;
 - administrator override;
+- invalid enum, length and server-owned input rejection;
+- missing-resource update and deletion behavior;
+- rejected updates leave persisted task data unchanged;
 - complete task create, list, update and delete workflow;
 - Arabic login-to-dashboard rendering.

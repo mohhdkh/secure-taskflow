@@ -48,12 +48,17 @@ flowchart LR
 |---|---|
 | Anonymous request | Protected task endpoints return `401` |
 | Invalid bearer token | Malformed JWT is rejected with `401` |
+| Expired or malformed token subject | Expired JWTs and missing/non-numeric subjects are rejected with `401` |
+| Wrong authentication scheme | Non-Bearer credentials are rejected without reaching task data |
 | Removed account | A valid token is rejected after its database user is deleted |
 | Member read scope | A member list contains only that member's tasks |
 | Cross-user mutation | Update and delete return `404` for another member's task |
 | Administrator scope | An administrator can manage a member-owned task |
+| Invalid input | Unknown fields, server-owned fields and invalid enum/length values return `422` |
+| Corrupted stored credential | A malformed password hash fails closed as invalid credentials |
+| Missing resource | Update and delete return a consistent `404` |
 
-The suite contains **10 backend/API tests** plus **1 frontend component test**. Pull requests run the backend suite against PostgreSQL 16 before merge. See the [measured engineering evidence](docs/engineering-evidence.md).
+The suite contains **28 backend/API cases** plus **1 frontend component test**. Pull requests run the backend suite against PostgreSQL 16 before merge. See the [measured engineering evidence](docs/engineering-evidence.md).
 
 ## Run with Docker
 

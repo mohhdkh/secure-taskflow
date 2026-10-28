@@ -19,8 +19,10 @@ Do not test against systems or accounts you do not own or have explicit permissi
 
 - Argon2 password hashing;
 - expiring JWT authentication;
+- fail-closed handling for expired tokens, malformed subjects and corrupted password hashes;
 - database-backed current-user resolution;
 - server-side owner scoping for reads and mutations;
+- strict request models that reject unknown and server-owned fields;
 - indistinguishable `404` responses for inaccessible task records;
 - PostgreSQL-backed authorization tests in CI;
 - no production credentials or customer data in the repository.
