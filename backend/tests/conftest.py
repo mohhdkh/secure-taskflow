@@ -7,8 +7,10 @@ os.environ["JWT_SECRET"] = "test-secret-not-for-production"
 
 from fastapi.testclient import TestClient
 
-from app.database import Base, engine
+from app.database import Base, SessionLocal, engine
 from app.main import app
+from app.models import User
+from app.security import create_token, hash_password
 
 
 @pytest.fixture(autouse=True)
@@ -30,4 +32,25 @@ def auth_headers(client):
     response = client.post("/auth/login", json={"username": "demo_admin", "password": "Demo123!"})
     assert response.status_code == 200
     return {"Authorization": f"Bearer {response.json()['access_token']}"}
+
+
+@pytest.fixture
+def user_factory():
+    def create(username: str, role: str = "member") -> User:
+        with SessionLocal() as db:
+            user = User(username=username, password_hash=hash_password("Member123!"), role=role)
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+            return user
+
+    return create
+
+
+@pytest.fixture
+def headers_for():
+    def build(user: User) -> dict[str, str]:
+        return {"Authorization": f"Bearer {create_token(user.id, user.role)}"}
+
+    return build
 
