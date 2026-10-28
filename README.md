@@ -42,6 +42,19 @@ flowchart LR
 - The frontend test verifies the Arabic login-to-dashboard path.
 - Docker Compose provides a reproducible three-service environment.
 
+## Authorization verification matrix
+
+| Security boundary | Automated evidence |
+|---|---|
+| Anonymous request | Protected task endpoints return `401` |
+| Invalid bearer token | Malformed JWT is rejected with `401` |
+| Removed account | A valid token is rejected after its database user is deleted |
+| Member read scope | A member list contains only that member's tasks |
+| Cross-user mutation | Update and delete return `404` for another member's task |
+| Administrator scope | An administrator can manage a member-owned task |
+
+The suite contains **10 backend/API tests** plus **1 frontend component test**. Pull requests run the backend suite against PostgreSQL 16 before merge. See the [measured engineering evidence](docs/engineering-evidence.md).
+
 ## Run with Docker
 
 ```bash
